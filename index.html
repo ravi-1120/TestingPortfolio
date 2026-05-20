@@ -12,30 +12,80 @@
       --gray: #555;
       --light-gray: #f8f9fa;
       --border: #ddd;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
     body {
       font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
-      margin: 0;
-      padding: 0;
       color: #333;
       background: #fff;
       line-height: 1.6;
+      overflow-x: hidden;
     }
+
+    /* Reveal animation on scroll (CSS only) */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: reveal 0.8s ease-out forwards;
+      animation-timeline: view();
+      animation-range: entry 0% entry 90%;
+    }
+    @keyframes reveal {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     header {
       background: linear-gradient(135deg, #0070d2, #00a1f1);
       color: #fff;
-      padding: 3rem 1.5rem;
+      padding: 4rem 1.5rem 3rem;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at top right, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+      pointer-events: none;
     }
     header h1 {
       margin: 0 0 0.5rem 0;
-      font-size: 2.2rem;
+      font-size: 2.4rem;
+      font-weight: 600;
+      transform: translateY(-10px);
+      animation: header-slide 0.8s ease-out 0.2s both;
     }
     header p {
       margin: 0;
       font-size: 1.1rem;
       opacity: 0.9;
+      font-weight: 400;
     }
+    @keyframes header-slide {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     nav {
       background: #fff;
       border-bottom: 1px solid var(--border);
@@ -43,6 +93,7 @@
       position: sticky;
       top: 0;
       z-index: 10;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
     nav ul {
       margin: 0;
@@ -53,109 +104,162 @@
       flex-wrap: wrap;
     }
     nav li {
-      margin: 0 1rem;
+      margin: 0 0.8rem;
     }
     nav a {
       text-decoration: none;
       color: var(--dark);
       font-weight: 500;
-      padding: 0.5rem 0;
+      padding: 0.6rem 0;
       border-bottom: 2px solid transparent;
-      transition: border-bottom 0.2s;
+      transition: var(--transition);
     }
     nav a:hover {
-      border-bottom: 2px solid var(--primary);
       color: var(--primary);
+      border-bottom-color: var(--primary);
     }
+
     main {
       max-width: 900px;
       margin: 2rem auto;
       padding: 0 1.5rem;
     }
     section {
-      margin-bottom: 3rem;
+      margin-bottom: 3.5rem;
     }
     h2 {
       color: var(--primary);
       border-bottom: 2px solid var(--primary-light);
       padding-bottom: 0.3rem;
       margin-top: 0;
+      margin-bottom: 1.2rem;
     }
     h3 {
-      margin: 0.7rem 0 0.5rem;
+      margin: 0.8rem 0 0.5rem;
       font-size: 1.2rem;
     }
     p {
       margin: 0.7rem 0;
     }
+
     .skill-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
-      margin: 0.7rem 0;
+      gap: 0.6rem;
+      margin: 0.8rem 0;
     }
     .badge {
-      background: var(--light-gray);
+      background: #fff;
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 0.3rem 0.7rem;
+      color: var(--dark);
+      border-radius: 30px;
+      padding: 0.4rem 0.9rem;
       font-size: 0.9rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      transition: var(--transition);
+      transform: translateZ(0);
     }
+    .badge:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0, 112, 210, 0.15);
+      background: #f0f6ff;
+      color: var(--primary);
+    }
+
     .project {
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1.2rem;
+      border-radius: 12px;
+      padding: 1.4rem;
       background: #fafafa;
-      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      transition: var(--transition);
     }
-    .project h3 {
-      margin-bottom: 0.3rem;
-    }
-    .project-meta {
+    .project:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(0, 112, 210, 0.12);
+  }
+  .project h3 {
+      margin-bottom: 0.4rem;
+      color: var(--primary);
+  }
+  .project-meta {
       font-size: 0.9rem;
       color: var(--gray);
       margin-bottom: 0.7rem;
-    }
-    .project ul {
+  }
+  .project ul {
       margin: 0.5rem 0;
       padding-left: 1.2rem;
-    }
-    .project li {
+  }
+  .project li {
       margin-bottom: 0.3rem;
-    }
-    .cta {
+  }
+
+  .cta {
       text-align: center;
-      margin-top: 2rem;
-      padding: 1.5rem;
+      margin-top: 2.5rem;
+      padding: 1.8rem 1.5rem;
       border: 1px solid var(--border);
-      border-radius: 8px;
-      background: #f0f6ff;
-    }
-    .cta a {
+      border-radius: 12px;
+      background: linear-gradient(135deg, #f0f6ff, #e8f4ff);
+      box-shadow: 0 6px 16px rgba(0, 112, 210, 0.1);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+  }
+  .cta::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at top right, rgba(30, 90, 150, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+  }
+  .cta:hover::before {
+      opacity: 1;
+  }
+  .cta a {
       display: inline-block;
       margin-top: 0.5rem;
       background: var(--primary);
       color: #fff;
-      padding: 0.6rem 1.3rem;
+      padding: 0.7rem 1.5rem;
       border-radius: 30px;
       text-decoration: none;
       font-weight: 500;
-    }
-    .cta a:hover {
+      transition: var(--transition);
+  }
+  .cta a:hover {
       background: var(--primary-light);
-    }
-    footer {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 112, 210, 0.25);
+  }
+
+  footer {
       text-align: center;
       margin-top: 4rem;
-      padding: 1.5rem 1.5rem 2rem;
+      padding: 1.8rem 1.5rem 2rem;
       color: var(--gray);
       font-size: 0.9rem;
       border-top: 1px solid var(--border);
-    }
+      background: #f9f9f9;
+  }
+
+  /* Add class="fade-in" to sections so they animate on scroll */
+  #about, #skills, #experience, #projects, #contact {
+      opacity: 0;
+      animation: reveal 0.8s ease-out forwards;
+      animation-timeline: view();
+      animation-range: entry 0% entry 90%;
+  }
   </style>
 </head>
 <body>
-  <header>
+  <header class="fade-in">
     <h1>Ravi Modi</h1>
     <p>Senior Salesforce Developer | 5+ Years of Salesforce Solutions</p>
   </header>
@@ -171,17 +275,17 @@
   </nav>
 
   <main>
-    <section id="about">
+    <section id="about" class="fade-in">
       <h2>About Me</h2>
       <p>
         I am a Senior Salesforce Developer with 5+ years of hands‑on experience building scalable, secure, and high‑performance Salesforce solutions on Lightning, Apex, LWC, and integration frameworks. I specialize in custom development, data migration, automation, and integrations, helping organizations improve sales, service, and operational efficiency.
       </p>
       <p>
-        Over the years, I have worked across multiple industries (e.g., BFSI, Healthcare, Retail, SaaS) and led complex Salesforce implementations from requirement analysis and architecture design to deployment and post‑go‑live support. I thrive in client‑facing roles where I can translate business needs into clean, maintainable code and robust Salesforce architectures.
+        Over the years, I have worked across multiple industries such as BFSI, Healthcare, Retail, and SaaS and have led complex Salesforce implementations from requirement analysis and architecture design to deployment and post‑go‑live support. I thrive in client‑facing roles where I can translate business needs into clean, maintainable code and robust Salesforce architectures.
       </p>
     </section>
 
-    <section id="skills">
+    <section id="skills" class="fade-in">
       <h2>Skills</h2>
       <p><strong>Core Salesforce:</strong></p>
       <div class="skill-list">
@@ -207,10 +311,10 @@
       </div>
     </section>
 
-    <section id="experience">
+    <section id="experience" class="fade-in">
       <h2>Professional Experience</h2>
 
-      <div class="project">
+      <div class="project fade-in">
         <h3>Senior Salesforce Developer – [Company Name]</h3>
         <p class="project-meta">Jan 20XX – Present | [City, Country]</p>
         <ul>
@@ -221,7 +325,7 @@
         </ul>
       </div>
 
-      <div class="project">
+      <div class="project fade-in">
         <h3>Salesforce Developer – [Previous Company]</h3>
         <p class="project-meta">Mar 20XX – Dec 20XX | [City, Country]</p>
         <ul>
@@ -232,10 +336,10 @@
       </div>
     </section>
 
-    <section id="projects">
+    <section id="projects" class="fade-in">
       <h2>Key Projects</h2>
 
-      <div class="project">
+      <div class="project fade-in">
         <h3>Sales & Service Cloud Implementation</h3>
         <p class="project-meta">Client: [Industry e.g., Healthcare SaaS] | Duration: 6 months</p>
         <ul>
@@ -246,7 +350,7 @@
         </ul>
       </div>
 
-      <div class="project">
+      <div class="project fade-in">
         <h3>Customer Community (Experience Cloud) Portal</h3>
         <p class="project-meta">Client: [Industry e.g., Banking/Insurance] | Duration: 4 months</p>
         <ul>
@@ -257,7 +361,7 @@
       </div>
     </section>
 
-    <section id="contact">
+    <section id="contact" class="fade-in">
       <h2>Get In Touch</h2>
       <p>
         I’m available for freelance, contract, or long‑term engagements. Let’s build your Salesforce solution together.
